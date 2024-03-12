@@ -12,8 +12,6 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -39,11 +37,15 @@ class MainActivity : ComponentActivity() {
 fun SignIn(modifier: Modifier = Modifier, navController: NavController) {
 
 
-    Column {
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+    ) {
         TextField(value = "", onValueChange = {}, placeholder = { Text("Enter Email") })
         TextField(value = "", onValueChange = {}, placeholder = { Text("Enter password") })
         Button(onClick = {
-            navController.navigate(Screen.DetailScreen.withArgs("text"))
+            navController.navigate(Screen.DetailScreen.withArgs("email"))
         }) {
             Text(text = "Sign in")
         }
