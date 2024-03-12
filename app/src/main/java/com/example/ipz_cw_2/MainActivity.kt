@@ -12,6 +12,8 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -36,11 +38,12 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun SignIn(modifier: Modifier = Modifier, navController: NavController) {
 
+
     Column {
         TextField(value = "", onValueChange = {}, placeholder = { Text("Enter Email") })
         TextField(value = "", onValueChange = {}, placeholder = { Text("Enter password") })
         Button(onClick = {
-//TODO make it
+            navController.navigate(Screen.DetailScreen.withArgs("text"))
         }) {
             Text(text = "Sign in")
         }
@@ -58,7 +61,7 @@ fun SignInPreview() {
 
 
 @Composable
-fun DetailScreen(modifier: Modifier = Modifier, navController: NavController) {
+fun DetailScreen(modifier: Modifier = Modifier, navController: NavController, email: String?) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -66,7 +69,7 @@ fun DetailScreen(modifier: Modifier = Modifier, navController: NavController) {
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        //TODO make success body
+        Text("Hello, $email")
     }
 }
 
@@ -74,7 +77,10 @@ fun DetailScreen(modifier: Modifier = Modifier, navController: NavController) {
 @Composable
 fun DetailScreenPreview() {
     IPZ_CW_2_Serhii_MelnykTheme {
-        DetailScreen(navController = NavController(LocalContext.current))
+        DetailScreen(
+            navController = NavController(LocalContext.current),
+            email = "email"
+        )
     }
 }
 
@@ -86,13 +92,13 @@ fun Navigation() {
         composable(route = Screen.MainScreen.route) {
             SignIn(navController = navController)
         }
-        composable(route = Screen.DetailScreen.route + "/{name}",
-            arguments = listOf(navArgument("name") {
+        composable(route = Screen.DetailScreen.route + "/{email}",
+            arguments = listOf(navArgument("email") {
                 type = NavType.StringType
                 defaultValue = "Some Default"
                 nullable = true
             })) { entry ->
-            DetailScreen(navController = navController)
+            DetailScreen(navController = navController, email = entry.arguments?.getString("email") )
         }
     }
 }
